@@ -33,11 +33,36 @@ def install_apt(package, log_callback=None):
     cmd = ["pkexec", "apt-get", "install", "-y"] + shlex.split(package)
     return run_command_with_callback(cmd, log_callback)
 
+def ensure_snap(log_callback=None):
+    import shutil
+    if shutil.which("snap"):
+        return True
+    if log_callback:
+        log_callback("snap not found, installing it via apt...")
+    return run_command_with_callback(["pkexec", "apt-get", "install", "-y", "snapd"], log_callback) == 0
+
+def ensure_flatpak(log_callback=None):
+    import shutil
+    if shutil.which("flatpak"):
+        return True
+    if log_callback:
+        log_callback("flatpak not found, installing it via apt...")
+    if run_command_with_callback(["pkexec", "apt-get", "install", "-y", "flatpak"], log_callback) != 0:
+        return False
+    # Add flathub remote if missing
+    run_command_with_callback(
+        ["flatpak", "remote-add", "--if-not-exists", "flathub", "https://dl.flathub.org/repo/flathub.flatpakrepo"],
+        log_callback
+    )
+    return True
+
 def install_snap(package, log_callback=None):
+    ensure_snap(log_callback)
     cmd = ["pkexec", "snap", "install"] + shlex.split(package)
     return run_command_with_callback(cmd, log_callback)
 
 def install_flatpak(package, log_callback=None):
+    ensure_flatpak(log_callback)
     cmd = ["flatpak", "install", "-y"] + shlex.split(package)
     return run_command_with_callback(cmd, log_callback)
 

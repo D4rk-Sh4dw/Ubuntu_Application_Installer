@@ -196,5 +196,14 @@
         "icon": "./icons/mission-center.svg",
         "pre_script": "",
         "script": ""
+    },
+    {
+        "name": "NoMachine",
+        "description": "Fast remote desktop access (NX protocol)",
+        "type": "deb",
+        "identifier": "https://download.nomachine.com/download/8.14/Linux/nomachine_8.14.2_1_amd64.deb",
+        "icon": "./icons/nomachine.svg",
+        "pre_script": "",
+        "script": ""
     }
 ]
