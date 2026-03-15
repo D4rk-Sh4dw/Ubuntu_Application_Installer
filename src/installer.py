@@ -39,10 +39,11 @@ def ensure_snap(log_callback=None):
         return True
     if log_callback:
         log_callback("snap not found – trying to install snapd...")
-    run_command_with_callback(["pkexec", "apt-get", "update"], log_callback)
+    # Update cache but ignore errors (e.g. broken GPG keys on other repos)
+    run_command_with_callback(["pkexec", "apt-get", "update", "--ignore-missing"], log_callback)
     if run_command_with_callback(["pkexec", "apt-get", "install", "-y", "snapd"], log_callback) != 0:
         if log_callback:
-            log_callback("ERROR: Could not install snapd. Please install it manually and retry.")
+            log_callback("ERROR: Could not install snapd. On Linux Mint, snap is disabled by default. Please install it manually.")
         return False
     return True
 
@@ -52,7 +53,8 @@ def ensure_flatpak(log_callback=None):
         return True
     if log_callback:
         log_callback("flatpak not found – trying to install flatpak...")
-    run_command_with_callback(["pkexec", "apt-get", "update"], log_callback)
+    # Update cache but ignore errors (e.g. broken GPG keys on other repos)
+    run_command_with_callback(["pkexec", "apt-get", "update", "--ignore-missing"], log_callback)
     if run_command_with_callback(["pkexec", "apt-get", "install", "-y", "flatpak"], log_callback) != 0:
         if log_callback:
             log_callback("ERROR: Could not install flatpak. Please install it manually and retry.")
