@@ -38,16 +38,24 @@ def ensure_snap(log_callback=None):
     if shutil.which("snap"):
         return True
     if log_callback:
-        log_callback("snap not found, installing it via apt...")
-    return run_command_with_callback(["pkexec", "apt-get", "install", "-y", "snapd"], log_callback) == 0
+        log_callback("snap not found – trying to install snapd...")
+    run_command_with_callback(["pkexec", "apt-get", "update"], log_callback)
+    if run_command_with_callback(["pkexec", "apt-get", "install", "-y", "snapd"], log_callback) != 0:
+        if log_callback:
+            log_callback("ERROR: Could not install snapd. Please install it manually and retry.")
+        return False
+    return True
 
 def ensure_flatpak(log_callback=None):
     import shutil
     if shutil.which("flatpak"):
         return True
     if log_callback:
-        log_callback("flatpak not found, installing it via apt...")
+        log_callback("flatpak not found – trying to install flatpak...")
+    run_command_with_callback(["pkexec", "apt-get", "update"], log_callback)
     if run_command_with_callback(["pkexec", "apt-get", "install", "-y", "flatpak"], log_callback) != 0:
+        if log_callback:
+            log_callback("ERROR: Could not install flatpak. Please install it manually and retry.")
         return False
     # Add flathub remote if missing
     run_command_with_callback(
@@ -57,12 +65,14 @@ def ensure_flatpak(log_callback=None):
     return True
 
 def install_snap(package, log_callback=None):
-    ensure_snap(log_callback)
+    if not ensure_snap(log_callback):
+        return 1
     cmd = ["pkexec", "snap", "install"] + shlex.split(package)
     return run_command_with_callback(cmd, log_callback)
 
 def install_flatpak(package, log_callback=None):
-    ensure_flatpak(log_callback)
+    if not ensure_flatpak(log_callback):
+        return 1
     cmd = ["flatpak", "install", "-y"] + shlex.split(package)
     return run_command_with_callback(cmd, log_callback)
 
