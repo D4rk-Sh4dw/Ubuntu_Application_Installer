@@ -1,0 +1,96 @@
+import subprocess
+import os
+import shlex
+
+def run_command_with_callback(cmd, log_callback=None):
+    if log_callback:
+        log_callback(f"Running: {' '.join(cmd)}")
+    
+    process = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+        bufsize=1
+    )
+    
+    for line in iter(process.stdout.readline, ''):
+        if log_callback:
+            log_callback(line.rstrip('\n'))
+            
+    process.stdout.close()
+    process.wait()
+    
+    if log_callback:
+        if process.returncode == 0:
+            log_callback("Success!")
+        else:
+            log_callback(f"Failed with return code {process.returncode}")
+            
+    return process.returncode
+
+def install_apt(package, log_callback=None):
+    cmd = ["pkexec", "apt-get", "install", "-y"] + shlex.split(package)
+    return run_command_with_callback(cmd, log_callback)
+
+def install_snap(package, log_callback=None):
+    cmd = ["pkexec", "snap", "install"] + shlex.split(package)
+    return run_command_with_callback(cmd, log_callback)
+
+def install_flatpak(package, log_callback=None):
+    cmd = ["flatpak", "install", "-y"] + shlex.split(package)
+    return run_command_with_callback(cmd, log_callback)
+
+def install_deb(path_or_url, log_callback=None):
+    if path_or_url.startswith("http://") or path_or_url.startswith("https://"):
+        filename = path_or_url.split("/")[-1]
+        dl_path = f"/tmp/{filename}"
+        if log_callback:
+            log_callback(f"Downloading {path_or_url} to {dl_path}...")
+        
+        wget_cmd = ["wget", "-O", dl_path, path_or_url]
+        if run_command_with_callback(wget_cmd, log_callback) != 0:
+            return 1
+            
+        cmd = ["pkexec", "apt-get", "install", "-y", dl_path]
+        return run_command_with_callback(cmd, log_callback)
+    else:
+        cmd = ["pkexec", "apt-get", "install", "-y", path_or_url]
+        return run_command_with_callback(cmd, log_callback)
+
+def run_post_install_script(script_path, log_callback=None):
+    if not script_path or not os.path.exists(script_path):
+        return
+    if log_callback:
+        log_callback(f"Running post-install script in terminal: {script_path}")
+        
+    terminals = [
+        ["x-terminal-emulator", "-e"],
+        ["gnome-terminal", "--wait", "--"],
+        ["konsole", "-e"],
+        ["xfce4-terminal", "-e"],
+        ["alacritty", "-e"],
+        ["kitty", "--"]
+    ]
+    
+    
+    # Ensure the script is executable
+    try:
+        import stat
+        st = os.stat(script_path)
+        os.chmod(script_path, st.st_mode | stat.S_IEXEC)
+    except Exception as e:
+        if log_callback:
+            log_callback(f"Warning: Could not make script executable: {e}")
+
+    script_cmd = f"'{os.path.abspath(script_path)}'; echo 'Press Enter to close...'; read"
+    
+    for term in terminals:
+        import shutil
+        if shutil.which(term[0]):
+            cmd = term + ["bash", "-c", script_cmd]
+            subprocess.run(cmd)
+            return
+            
+    if log_callback:
+        log_callback("Error: Could not find a suitable terminal emulator to run the script.")

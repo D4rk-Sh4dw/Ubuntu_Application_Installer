@@ -1,0 +1,200 @@
+[
+    {
+        "name": "OnlyOffice",
+        "description": "Powerful and secure office suite",
+        "type": "snap",
+        "identifier": "onlyoffice-desktopeditors",
+        "icon": "./icons/onlyoffice-desktopeditors.svg",
+        "script": ""
+    },
+    {
+        "name": "TeamViewer",
+        "description": "Remote control and meeting software",
+        "type": "deb",
+        "identifier": "https://download.teamviewer.com/download/linux/teamviewer_amd64.deb",
+        "icon": "./icons/teamviewer.svg",
+        "script": ""
+    },
+    {
+        "name": "Microsoft Teams",
+        "description": "Unofficial Teams for Linux client",
+        "type": "snap",
+        "identifier": "teams-for-linux",
+        "icon": "./icons/teams.svg",
+        "script": ""
+    },
+    {
+        "name": "Remote Desktop Manager",
+        "description": "Devolutions Remote Desktop Manager",
+        "type": "deb",
+        "identifier": "https://cdn.devolutions.net/download/Linux/RDM/2024.1.1.1/RemoteDesktopManager_2024.1.1.1_amd64.deb",
+        "icon": "./icons/remmina.svg",
+        "script": ""
+    },
+    {
+        "name": "Spotify",
+        "description": "Music streaming service",
+        "type": "apt",
+        "identifier": "spotify-client",
+        "icon": "./icons/spotify-client.svg",
+        "script": ""
+    },
+    {
+        "name": "Vivaldi Browser",
+        "description": "Fast and customizable web browser",
+        "type": "deb",
+        "identifier": "https://downloads.vivaldi.com/stable/vivaldi-stable_amd64.deb",
+        "icon": "./icons/vivaldi.svg",
+        "script": ""
+    },
+    {
+        "name": "VS Code",
+        "description": "Code editor by Microsoft",
+        "type": "snap",
+        "identifier": "code --classic",
+        "icon": "./icons/visual-studio-code.svg",
+        "script": ""
+    },
+    {
+        "name": "NormCap",
+        "description": "OCR-powered screen capture tool",
+        "type": "flatpak",
+        "identifier": "com.github.dynobo.normcap",
+        "icon": "./icons/normcap.svg",
+        "script": ""
+    },
+    {
+        "name": "Upscayl",
+        "description": "Free and Open Source AI Image Upscaler",
+        "type": "flatpak",
+        "identifier": "org.upscayl.Upscayl",
+        "icon": "./icons/upscayl.svg",
+        "script": ""
+    },
+    {
+        "name": "GIMP",
+        "description": "GNU Image Manipulation Program",
+        "type": "apt",
+        "identifier": "gimp",
+        "icon": "./icons/gimp.svg",
+        "script": ""
+    },
+    {
+        "name": "VLC",
+        "description": "Versatile media player",
+        "type": "apt",
+        "identifier": "vlc",
+        "icon": "./icons/vlc.svg",
+        "script": ""
+    },
+    {
+        "name": "Whatsie",
+        "description": "Feature-rich WhatsApp client",
+        "type": "snap",
+        "identifier": "whatsie",
+        "icon": "./icons/whatsie.svg",
+        "script": ""
+    },
+    {
+        "name": "Bitwarden",
+        "description": "Secure password manager",
+        "type": "snap",
+        "identifier": "bitwarden",
+        "icon": "./icons/bitwarden.svg",
+        "script": ""
+    },
+    {
+        "name": "Darktable",
+        "description": "Virtual lighttable and darkroom for photographers",
+        "type": "flatpak",
+        "identifier": "org.darktable.Darktable",
+        "icon": "./icons/darktable.svg",
+        "script": ""
+    },
+    {
+        "name": "BleachBit",
+        "description": "System cleaner and privacy tool",
+        "type": "apt",
+        "identifier": "bleachbit",
+        "icon": "./icons/bleachbit.svg",
+        "script": ""
+    },
+    {
+        "name": "Synaptic",
+        "description": "Graphical package management program",
+        "type": "apt",
+        "identifier": "synaptic",
+        "icon": "./icons/synaptic.svg",
+        "script": ""
+    },
+    {
+        "name": "GParted",
+        "description": "Partition manager for Linux",
+        "type": "apt",
+        "identifier": "gparted",
+        "icon": "./icons/gparted.svg",
+        "script": ""
+    },
+    {
+        "name": "PowerTOP",
+        "description": "Linux system power consumption profiler (sudo powertop)",
+        "type": "apt",
+        "identifier": "powertop",
+        "icon": "./icons/utilities-terminal.svg",
+        "pre_script": "",
+        "script": ""
+    },
+    {
+        "name": "Cronjob Generator",
+        "description": "Interactive tool to create system crontabs",
+        "type": "none",
+        "identifier": "",
+        "icon": "./icons/accessories-text-editor.svg",
+        "script": "scripts/create_cronjob.sh"
+    },
+    {
+        "name": "Bash Alias Generator",
+        "description": "Interactive tool to create new terminal aliases",
+        "type": "none",
+        "identifier": "",
+        "icon": "./icons/utilities-terminal.svg",
+        "pre_script": "",
+        "script": "scripts/create_alias.sh"
+    },
+    {
+        "name": "Antigravity",
+        "description": "Google Antigravity Coding IDE",
+        "type": "apt",
+        "identifier": "antigravity",
+        "icon": "./icons/Google-Antigravity-Icon-Full-Color.png",
+        "pre_script": "./scripts/antigravity_sources.list.d.sh",
+        "script": ""
+    },
+    {
+        "name": "plocate",
+        "description": "Schnelle Terminal-Dateisuche mit Index (alias = search <name>)",
+        "type": "apt",
+        "identifier": "plocate",
+        "icon": "./icons/utilities-terminal.svg",
+        "pre_script": "",
+        "script": "./scripts/plocate_updatedb_cron.sh"
+    },
+    {
+        "name": "ptyxis",
+        "description": "ptyxis Terminal",
+        "type": "apt",
+        "identifier": "ptyxis",
+        "icon": "./icons/utilities-terminal.svg",
+        "pre_script": "",
+        "script": ""
+    },
+    {
+        "name": "Mission Center",
+        "description": "Systemmonitoring",
+        "type": "apt",
+        "identifier": "io.missioncenter.MissionCenter",
+        "icon": "./icons/mission-center.svg",
+        "pre_script": "",
+        "script": ""
+    }
+]
