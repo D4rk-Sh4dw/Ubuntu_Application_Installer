@@ -10,7 +10,7 @@ echo "Installing system dependencies..."
 apt-get update
 # We need python3-venv for uv to create virtual environments, 
 # python3-pip just in case, and standard build tools
-apt-get install -y python3-venv python3-pip curl
+apt-get install -y python3-venv python3-pip curl libxcb-cursor0
 
 echo "Installing uv package manager..."
 # Install uv locally for all users
