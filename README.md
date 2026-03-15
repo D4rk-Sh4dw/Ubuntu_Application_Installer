@@ -19,15 +19,23 @@ A modern PyQt6-based GUI application for automating software installation on Ubu
 
 ## Quickstart
 
-### 1. Setup Dependencies
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/D4rk-Sh4dw/Ubuntu_Application_Installer.git
+cd Ubuntu_Application_Installer
+chmod +x setup.sh run.sh
+```
+
+### 2. Setup Dependencies
 
 ```bash
 sudo ./setup.sh
 ```
 
-This installs `python3-venv`, `curl`, and the `uv` package manager.
+This installs `python3-venv`, `curl`, `libxcb-cursor0`, and the `uv` package manager.
 
-### 2. Download Icons
+### 3. Download Icons
 
 ```bash
 python3 download_icons.py
@@ -35,11 +43,13 @@ python3 download_icons.py
 
 This pulls SVG icons from the Papirus icon theme for all pre-configured applications.
 
-### 3. Run the App
+### 4. Run the App
 
 ```bash
 ./run.sh
 ```
+
+> ⚠️ **Do NOT use `sudo ./run.sh`** – the app requests root privileges via `pkexec` only when needed for installations.
 
 ## Project Structure
 
