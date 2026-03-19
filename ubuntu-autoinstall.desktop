@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=Ubuntu Package Installer
+Comment=Auto-installer for Ubuntu packages
+Exec=/home/marcel/antigravity/autoinstall_ubuntu/run.sh
+Icon=/home/marcel/antigravity/autoinstall_ubuntu/app_icon.png
+Terminal=false
+Type=Application
+Categories=System;Utility;

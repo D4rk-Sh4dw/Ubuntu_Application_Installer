@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget, 
-                             QPushButton, QListWidget, QListWidgetItem, QHBoxLayout, QCheckBox, QTextEdit, QLineEdit)
+                             QPushButton, QListWidget, QListWidgetItem, QHBoxLayout, QCheckBox, QTextEdit, QLineEdit, QInputDialog)
 from PyQt6.QtGui import QIcon, QPixmap
 from PyQt6.QtCore import Qt, QThread, pyqtSignal
 
@@ -12,9 +12,10 @@ class InstallWorker(QThread):
     log_signal = pyqtSignal(str)
     finished_signal = pyqtSignal()
 
-    def __init__(self, apps_to_install):
+    def __init__(self, apps_to_install, password):
         super().__init__()
         self.apps_to_install = apps_to_install
+        self.password = password
 
     def run(self):
         for app in self.apps_to_install:
@@ -28,13 +29,13 @@ class InstallWorker(QThread):
                 run_post_install_script(app["pre_script"], log_callback)
 
             if app["type"] == "apt":
-                install_apt(app["identifier"], log_callback)
+                install_apt(app["identifier"], log_callback, self.password)
             elif app["type"] == "snap":
-                install_snap(app["identifier"], log_callback)
+                install_snap(app["identifier"], log_callback, self.password)
             elif app["type"] == "flatpak":
-                install_flatpak(app["identifier"], log_callback)
+                install_flatpak(app["identifier"], log_callback, self.password)
             elif app["type"] == "deb":
-                install_deb(app["identifier"], log_callback)
+                install_deb(app["identifier"], log_callback, self.password)
             
             if app.get("script"):
                 run_post_install_script(app["script"], log_callback)
@@ -316,7 +317,19 @@ class MainWindow(QMainWindow):
         self.log_output.clear()
         self.log_message(f"Preparing to process {len(apps_to_install)} application(s)...")
         
-        self.worker = InstallWorker(apps_to_install)
+        password, ok = QInputDialog.getText(
+            self, 
+            "Sudo Password Required", 
+            "Please enter your sudo password for installation:",
+            QLineEdit.EchoMode.Password
+        )
+        
+        if not ok or not password:
+            self.log_message("Installation cancelled. Sudo password is required.")
+            self.installation_finished()
+            return
+
+        self.worker = InstallWorker(apps_to_install, password)
         self.worker.log_signal.connect(self.log_message)
         self.worker.finished_signal.connect(self.installation_finished)
         self.worker.start()
